@@ -15,6 +15,10 @@ const { Content } = await piece.render();
 
 const romanNumerals = ['I','II','III','IV','V','VI','VII','VIII'];
 const numeral = romanNumerals[piece.data.number - 1];
+
+// Read Supabase keys
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 ---
 
 <Layout title={`${piece.data.title} — Mickey's Writing`} description={piece.data.excerpt}>
@@ -31,11 +35,150 @@ const numeral = romanNumerals[piece.data.number - 1];
       <Content />
     </div>
 
+    <!-- Comments Section -->
+    <section 
+      class="comments-section" 
+      data-slug={piece.slug}
+      data-supabase-url={supabaseUrl}
+      data-supabase-key={supabaseKey}
+    >
+      <h3>ความคิดเห็น</h3>
+      <div id="comments-list" class="comments-list">
+        <p class="no-comments">กำลังโหลดความคิดเห็น...</p>
+      </div>
+
+      <form id="comment-form" class="comment-form">
+        <h4>เขียนความคิดเห็น</h4>
+        <div class="form-group">
+          <label for="author-name">ชื่อของคุณ</label>
+          <input type="text" id="author-name" required placeholder="เช่น สมชาย ใจดี" />
+        </div>
+        <div class="form-group">
+          <label for="comment-content">ข้อความ</label>
+          <textarea id="comment-content" required rows="4" placeholder="แบ่งปันความคิดเห็นของคุณ..."></textarea>
+        </div>
+        <button type="submit" id="submit-btn">ส่งความคิดเห็น</button>
+      </form>
+    </section>
+
     <footer class="article-footer">
       <a href="/" class="back-link">← กลับไปหน้าหลัก</a>
     </footer>
   </article>
 </Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const section = document.querySelector('.comments-section') as HTMLElement;
+    if (!section) return;
+
+    const slug = section.getAttribute('data-slug');
+    const supabaseUrl = section.getAttribute('data-supabase-url');
+    const supabaseKey = section.getAttribute('data-supabase-key');
+
+    const commentsList = document.getElementById('comments-list') as HTMLElement;
+    const form = document.getElementById('comment-form') as HTMLFormElement;
+    const authorInput = document.getElementById('author-name') as HTMLInputElement;
+    const contentInput = document.getElementById('comment-content') as HTMLTextAreaElement;
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+    if (!supabaseUrl || !supabaseKey) {
+      commentsList.innerHTML = `<p class="no-comments">ระบบความคิดเห็นยังไม่ได้ตั้งค่าการเชื่อมต่อ (กรุณาตั้งค่า PUBLIC_SUPABASE_URL และ PUBLIC_SUPABASE_ANON_KEY)</p>`;
+      form.style.display = 'none';
+      return;
+    }
+
+    // Fetch comments
+    async function fetchComments() {
+      try {
+        const res = await fetch(`${supabaseUrl}/rest/v1/comments?article_slug=eq.${slug}&select=*&order=created_at.asc`, {
+          headers: {
+            'apikey': supabaseKey!,
+            'Authorization': `Bearer ${supabaseKey}`
+          }
+        });
+        if (!res.ok) throw new Error('Failed to fetch comments');
+        const comments = await res.json();
+        
+        if (comments.length === 0) {
+          commentsList.innerHTML = `<p class="no-comments">ยังไม่มีความคิดเห็น มาร่วมเป็นคนแรกที่แสดงความคิดเห็นกัน!</p>`;
+          return;
+        }
+
+        commentsList.innerHTML = comments.map((comment: any) => {
+          const date = new Date(comment.created_at).toLocaleDateString('th-TH', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+          const safeName = comment.author_name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          const safeContent = comment.content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          
+          return `
+            <div class="comment-card">
+              <div class="comment-header">
+                <span class="comment-author">${safeName}</span>
+                <span class="comment-date">${date}</span>
+              </div>
+              <p class="comment-text">${safeContent}</p>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error(err);
+        commentsList.innerHTML = `<p class="no-comments">ไม่สามารถโหลดความคิดเห็นได้ในขณะนี้</p>`;
+      }
+    }
+
+    // Submit comment
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const author = authorInput.value.trim();
+      const content = contentInput.value.trim();
+      if (!author || !content) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'กำลังส่ง...';
+
+      try {
+        const res = await fetch(`${supabaseUrl}/rest/v1/comments`, {
+          method: 'POST',
+          headers: {
+            'apikey': supabaseKey!,
+            'Authorization': `Bearer ${supabaseKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify({
+            article_slug: slug,
+            author_name: author,
+            content: content
+          })
+        });
+
+        if (!res.ok) {
+          const errorDetails = await res.json().catch(() => ({}));
+          throw new Error(errorDetails.message || `HTTP ${res.status}`);
+        }
+
+        authorInput.value = '';
+        contentInput.value = '';
+        await fetchComments();
+      } catch (err: any) {
+        console.error(err);
+        alert(`เกิดข้อผิดพลาดในการส่งความคิดเห็น: ${err.message}\n\n(กรุณาตรวจสอบว่าได้สร้างตาราง comments และตั้งค่า RLS ใน Supabase เรียบร้อยแล้ว)`);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'ส่งความคิดเห็น';
+      }
+    });
+
+    fetchComments();
+  });
+</script>
 
 <style>
   article {
@@ -95,6 +238,131 @@ const numeral = romanNumerals[piece.data.number - 1];
 
   .content :global(em) {
     color: var(--color-muted);
+  }
+
+  /* Comments Section Styling */
+  .comments-section {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .comments-section h3 {
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    color: var(--color-text);
+  }
+
+  .comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .comment-card {
+    padding: 1.2rem;
+    background-color: rgba(224, 219, 212, 0.15);
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+  }
+
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .comment-author {
+    font-weight: 500;
+    color: var(--color-accent);
+  }
+
+  .comment-date {
+    color: var(--color-muted);
+  }
+
+  .comment-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    white-space: pre-wrap;
+  }
+
+  .no-comments {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+
+  /* Comment Form Styling */
+  .comment-form {
+    background-color: rgba(224, 219, 212, 0.08);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+  }
+
+  .comment-form h4 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 1.2rem;
+    color: var(--color-text);
+  }
+
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.7rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--color-accent);
+  }
+
+  .comment-form button {
+    background-color: var(--color-accent);
+    color: #fff;
+    border: none;
+    padding: 0.65rem 1.4rem;
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .comment-form button:hover {
+    background-color: #725a38;
+  }
+
+  .comment-form button:disabled {
+    background-color: var(--color-border);
+    color: var(--color-muted);
+    cursor: not-allowed;
   }
 
   .article-footer {
