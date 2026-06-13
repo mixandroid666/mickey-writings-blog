@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import heroImage from '../assets/hero-banner.jpg';
 
 const writings = await getCollection('writings');
 writings.sort((a, b) => a.data.number - b.data.number);
@@ -8,6 +10,9 @@ writings.sort((a, b) => a.data.number - b.data.number);
 
 <Layout title="Mickey's Writing — งานเขียน">
   <section class="hero">
+    <div class="hero-image-wrapper">
+      <Image src={heroImage} alt="Mickey's Writing Banner" class="hero-image" />
+    </div>
     <h1>งานเขียน</h1>
     <p class="subtitle">บทความและความคิด</p>
   </section>
@@ -37,6 +42,22 @@ writings.sort((a, b) => a.data.number - b.data.number);
     margin-bottom: 3rem;
     padding-bottom: 2rem;
     border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-image-wrapper {
+    width: 100%;
+    aspect-ratio: 21/9;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-border);
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   h1 {
@@ -96,6 +117,7 @@ writings.sort((a, b) => a.data.number - b.data.number);
 
   .writing-info {
     flex: 1;
+    padding-right: 0.5rem;
   }
 
   h2 {
@@ -120,5 +142,17 @@ writings.sort((a, b) => a.data.number - b.data.number);
     font-size: 1rem;
     padding-top: 0.2rem;
     transition: transform 0.15s ease, color 0.15s ease;
+  }
+
+  @media (max-width: 580px) {
+    .hero-image-wrapper {
+      aspect-ratio: 16/9;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .writing-item a {
+      gap: 1rem;
+    }
   }
 </style>
