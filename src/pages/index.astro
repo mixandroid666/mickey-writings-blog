@@ -13,8 +13,9 @@ writings.sort((a, b) => a.data.number - b.data.number);
     <div class="hero-image-wrapper">
       <Image src={heroImage} alt="Mickey's Writing Banner" class="hero-image" />
     </div>
-    <h1>งานเขียน</h1>
-    <p class="subtitle">บทความและความคิด</p>
+    <p class="hero-label">งานเขียน</p>
+    <h1>บทความและความคิด</h1>
+    <p class="hero-sub">รวมงานเขียนที่สะท้อนความรู้สึก ประสบการณ์ และมุมมองต่อชีวิต</p>
   </section>
 
   <ul class="writing-list">
@@ -38,41 +39,66 @@ writings.sort((a, b) => a.data.number - b.data.number);
 </Layout>
 
 <style>
+  /* Hero */
   .hero {
     margin-bottom: 3rem;
-    padding-bottom: 2rem;
+    padding-bottom: 2.5rem;
     border-bottom: 1px solid var(--color-border);
   }
 
   .hero-image-wrapper {
     width: 100%;
-    aspect-ratio: 21/9;
-    border-radius: 8px;
+    max-width: 100%;
+    aspect-ratio: 16/7;
+    border-radius: 10px;
     overflow: hidden;
     margin-bottom: 2rem;
-    border: 1px solid var(--color-border);
-    background-color: var(--color-border);
+    border: 1px solid var(--color-border-light);
+    background-color: var(--color-surface);
+    box-sizing: border-box;
   }
 
   .hero-image {
     width: 100%;
     height: 100%;
+    max-width: 100%;
     object-fit: cover;
+    display: block;
+    transition: transform 0.4s var(--ease);
+  }
+
+  .hero-image-wrapper:hover .hero-image {
+    transform: scale(1.02);
+  }
+
+  .hero-label {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+    opacity: 0.85;
   }
 
   h1 {
-    font-size: 2rem;
-    font-weight: 300;
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 500;
     color: var(--color-text);
-    margin-bottom: 0.5rem;
-    letter-spacing: 0.02em;
+    margin-bottom: 0.75rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
   }
 
-  .subtitle {
+  .hero-sub {
     color: var(--color-muted);
-    font-size: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    max-width: 480px;
   }
 
+  /* Writing List */
   .writing-list {
     list-style: none;
     display: flex;
@@ -83,36 +109,56 @@ writings.sort((a, b) => a.data.number - b.data.number);
   .writing-item a {
     display: flex;
     align-items: flex-start;
-    gap: 1.5rem;
-    padding: 1.5rem 0;
-    border-bottom: 1px solid var(--color-border);
+    gap: 1.4rem;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--color-border-light);
     color: var(--color-text);
     text-decoration: none;
-    transition: all 0.15s ease;
+    transition: background-color 0.2s var(--ease);
+    position: relative;
   }
 
-  .writing-item a:hover {
-    color: var(--color-accent);
-    text-decoration: none;
+  .writing-item a::after {
+    content: '';
+    position: absolute;
+    left: -0.75rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-accent);
+    border-radius: 2px;
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 0.2s var(--ease);
+  }
+
+  .writing-item a:hover::after {
+    transform: scaleY(1);
   }
 
   .writing-item a:hover .number {
     color: var(--color-accent);
   }
 
+  .writing-item a:hover h2 {
+    color: var(--color-accent);
+  }
+
   .writing-item a:hover .arrow {
-    transform: translateX(4px);
+    transform: translateX(5px);
     color: var(--color-accent);
   }
 
   .number {
-    font-size: 0.8rem;
-    color: var(--color-muted);
-    min-width: 2rem;
-    padding-top: 0.3rem;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 0.78rem;
+    color: var(--color-border);
+    min-width: 1.8rem;
+    padding-top: 0.35rem;
     font-weight: 400;
     letter-spacing: 0.05em;
-    transition: color 0.15s ease;
+    transition: color 0.2s var(--ease);
   }
 
   .writing-info {
@@ -121,16 +167,19 @@ writings.sort((a, b) => a.data.number - b.data.number);
   }
 
   h2 {
-    font-size: 1.15rem;
-    font-weight: 400;
-    margin-bottom: 0.4rem;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.35rem;
     line-height: 1.4;
+    color: var(--color-text-soft);
+    transition: color 0.2s var(--ease);
   }
 
   .excerpt {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     color: var(--color-muted);
-    line-height: 1.6;
+    line-height: 1.65;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -138,10 +187,11 @@ writings.sort((a, b) => a.data.number - b.data.number);
   }
 
   .arrow {
-    color: var(--color-muted);
-    font-size: 1rem;
-    padding-top: 0.2rem;
-    transition: transform 0.15s ease, color 0.15s ease;
+    color: var(--color-border);
+    font-size: 0.95rem;
+    padding-top: 0.25rem;
+    transition: transform 0.2s var(--ease), color 0.2s var(--ease);
+    flex-shrink: 0;
   }
 
   @media (max-width: 580px) {
@@ -151,6 +201,9 @@ writings.sort((a, b) => a.data.number - b.data.number);
   }
 
   @media (max-width: 420px) {
+    h1 {
+      font-size: 1.75rem;
+    }
     .writing-item a {
       gap: 1rem;
     }
