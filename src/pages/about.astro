@@ -429,7 +429,7 @@ import profileImage from '../assets/88426601_10214395664678959_23334489501634396
 
 <script>
   // Minimal QR code generator using the QR Code API
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('astro:page-load', () => {
     const npub = 'npub1x2sk4uhj0vz3ndg25wfcluzwnafldy58lm2d8ankmutd0jz9jxyqhp8es6';
     const canvas = document.getElementById('nostr-qr') as HTMLCanvasElement;
 

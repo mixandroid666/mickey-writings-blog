@@ -75,7 +75,7 @@ const numeral = romanNumerals[track.data.number - 1];
 </Layout>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('astro:page-load', () => {
     const audio = document.getElementById('audio-player') as HTMLAudioElement;
     const playBtn = document.getElementById('play-btn') as HTMLButtonElement;
     const playIcon = document.getElementById('play-icon') as HTMLSpanElement;

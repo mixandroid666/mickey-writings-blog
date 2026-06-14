@@ -73,7 +73,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 </Layout>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('astro:page-load', () => {
     const section = document.querySelector('.comments-section') as HTMLElement;
     if (!section) return;
 
