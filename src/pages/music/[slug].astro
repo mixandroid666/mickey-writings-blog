@@ -15,6 +15,10 @@ const { Content } = await track.render();
 
 const romanNumerals = ['I','II','III','IV','V','VI','VII','VIII','IX','X'];
 const numeral = romanNumerals[track.data.number - 1];
+
+// Read Supabase keys
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 ---
 
 <Layout title={`${track.data.title} — บทเพลง`} description={track.data.excerpt}>
@@ -67,6 +71,34 @@ const numeral = romanNumerals[track.data.number - 1];
     <div class="content">
       <Content />
     </div>
+
+    <!-- Comments Section -->
+    <section
+      class="comments-section"
+      data-slug={track.slug}
+      data-supabase-url={supabaseUrl}
+      data-supabase-key={supabaseKey}
+    >
+      <div class="comments-header">
+        <h3>ความคิดเห็น</h3>
+      </div>
+      <div id="comments-list" class="comments-list">
+        <p class="no-comments">กำลังโหลดความคิดเห็น...</p>
+      </div>
+
+      <form id="comment-form" class="comment-form">
+        <h4>แบ่งปันความคิดเห็น</h4>
+        <div class="form-group">
+          <label for="author-name">ชื่อของคุณ</label>
+          <input type="text" id="author-name" required placeholder="ชื่อของคุณ" />
+        </div>
+        <div class="form-group">
+          <label for="comment-content">ข้อความ</label>
+          <textarea id="comment-content" required rows="4" placeholder="แบ่งปันความคิดเห็นของคุณ..."></textarea>
+        </div>
+        <button type="submit" id="submit-btn">ส่งความคิดเห็น</button>
+      </form>
+    </section>
 
     <footer class="article-footer">
       <a href="/music" class="back-link">← กลับไปบทเพลงทั้งหมด</a>
@@ -154,6 +186,115 @@ const numeral = romanNumerals[track.data.number - 1];
         volumeBtn.textContent = '🔉';
       } else {
         volumeBtn.textContent = '🔊';
+      }
+    }
+
+    // --- Comments Section Logic ---
+    const section = document.querySelector('.comments-section') as HTMLElement;
+    if (section) {
+      const slug = section.getAttribute('data-slug');
+      const supabaseUrl = section.getAttribute('data-supabase-url');
+      const supabaseKey = section.getAttribute('data-supabase-key');
+
+      const commentsList = document.getElementById('comments-list') as HTMLElement;
+      const form = document.getElementById('comment-form') as HTMLFormElement;
+      const authorInput = document.getElementById('author-name') as HTMLInputElement;
+      const contentInput = document.getElementById('comment-content') as HTMLTextAreaElement;
+      const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+      if (!supabaseUrl || !supabaseKey) {
+        commentsList.innerHTML = `<p class="no-comments">ระบบความคิดเห็นยังไม่ได้ตั้งค่าการเชื่อมต่อ (กรุณาตั้งค่า PUBLIC_SUPABASE_URL และ PUBLIC_SUPABASE_ANON_KEY)</p>`;
+        form.style.display = 'none';
+      } else {
+        // Fetch comments
+        const fetchComments = async () => {
+          try {
+            const res = await fetch(`${supabaseUrl}/rest/v1/comments?article_slug=eq.${slug}&select=*&order=created_at.asc`, {
+              headers: {
+                'apikey': supabaseKey!,
+                'Authorization': `Bearer ${supabaseKey}`
+              }
+            });
+            if (!res.ok) throw new Error('Failed to fetch comments');
+            const comments = await res.json();
+
+            if (comments.length === 0) {
+              commentsList.innerHTML = `<p class="no-comments">ยังไม่มีความคิดเห็น มาร่วมเป็นคนแรกที่แสดงความคิดเห็นกัน!</p>`;
+              return;
+            }
+
+            commentsList.innerHTML = comments.map((comment: any) => {
+              const date = new Date(comment.created_at).toLocaleDateString('th-TH', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              });
+              const safeName = comment.author_name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+              const safeContent = comment.content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+              return `
+                <div class="comment-card">
+                  <div class="comment-header">
+                    <span class="comment-author">${safeName}</span>
+                    <span class="comment-date">${date}</span>
+                  </div>
+                  <p class="comment-text">${safeContent}</p>
+                </div>
+              `;
+            }).join('');
+          } catch (err) {
+            console.error(err);
+            commentsList.innerHTML = `<p class="no-comments">ไม่สามารถโหลดความคิดเห็นได้ในขณะนี้</p>`;
+          }
+        };
+
+        // Submit comment
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          const author = authorInput.value.trim();
+          const content = contentInput.value.trim();
+          if (!author || !content) return;
+
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'กำลังส่ง...';
+
+          try {
+            const res = await fetch(`${supabaseUrl}/rest/v1/comments`, {
+              method: 'POST',
+              headers: {
+                'apikey': supabaseKey!,
+                'Authorization': `Bearer ${supabaseKey}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=representation'
+              },
+              body: JSON.stringify({
+                article_slug: slug,
+                author_name: author,
+                content: content
+              })
+            });
+
+            if (!res.ok) {
+              const errorDetails = await res.json().catch(() => ({}));
+              throw new Error(errorDetails.message || `HTTP ${res.status}`);
+            }
+
+            authorInput.value = '';
+            contentInput.value = '';
+            await fetchComments();
+          } catch (err: any) {
+            console.error(err);
+            alert(`เกิดข้อผิดพลาดในการส่งความคิดเห็น: ${err.message}\n\n(กรุณาตรวจสอบว่าได้สร้างตาราง comments และตั้งค่า RLS ใน Supabase เรียบร้อยแล้ว)`);
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'ส่งความคิดเห็น';
+          }
+        });
+
+        fetchComments();
       }
     }
   });
@@ -412,6 +553,159 @@ const numeral = romanNumerals[track.data.number - 1];
     border-top: 1px solid var(--color-border-light);
   }
 
+  /* Comments Section */
+  .comments-section {
+    margin-top: 4.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--color-border-light);
+  }
+
+  .comments-header {
+    margin-bottom: 1.8rem;
+  }
+
+  .comments-section h3 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .comment-card {
+    padding: 1.2rem 1.4rem;
+    background-color: var(--color-surface);
+    border-radius: 8px;
+    border: 1px solid var(--color-border-light);
+    transition: border-color 0.2s var(--ease);
+  }
+
+  .comment-card:hover {
+    border-color: var(--color-border);
+  }
+
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    font-size: 0.78rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .comment-author {
+    font-weight: 600;
+    color: var(--color-accent);
+    letter-spacing: 0.01em;
+  }
+
+  .comment-date {
+    color: var(--color-muted);
+    flex-shrink: 0;
+  }
+
+  .comment-text {
+    font-size: 0.93rem;
+    line-height: 1.75;
+    color: var(--color-text-soft);
+    white-space: pre-wrap;
+  }
+
+  .no-comments {
+    color: var(--color-muted);
+    font-size: 0.88rem;
+    font-style: italic;
+  }
+
+  /* Comment Form */
+  .comment-form {
+    background-color: transparent;
+    padding: 1.8rem;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    margin-top: 1rem;
+  }
+
+  .comment-form h4 {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 1.4rem;
+    color: var(--color-text);
+  }
+
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.77rem;
+    color: var(--color-muted);
+    margin-bottom: 0.45rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    resize: vertical;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(124, 92, 58, 0.1);
+  }
+
+  .comment-form button {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--color-text);
+    color: var(--color-bg);
+    border: none;
+    padding: 0.65rem 1.5rem;
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s var(--ease), transform 0.15s var(--ease);
+    letter-spacing: 0.01em;
+  }
+
+  .comment-form button:hover {
+    background-color: var(--color-accent);
+    transform: translateY(-1px);
+  }
+
+  .comment-form button:active {
+    transform: translateY(0);
+  }
+
+  .comment-form button:disabled {
+    background-color: var(--color-border);
+    color: var(--color-muted);
+    cursor: not-allowed;
+    transform: none;
+  }
+
   @media (max-width: 580px) {
     h1 {
       font-size: 1.6rem;
@@ -429,6 +723,10 @@ const numeral = romanNumerals[track.data.number - 1];
       width: 100%;
       justify-content: flex-end;
       margin-top: 0.5rem;
+    }
+
+    .comment-form {
+      padding: 1.2rem;
     }
   }
 </style>
