@@ -1,0 +1,497 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import profileImage from '../assets/88426601_10214395664678959_2333448950163439616_n.jpg';
+---
+
+<Layout title="เกี่ยวกับ Mickey — Mickey's Writing" description="ทำความรู้จักกับ Mickey ผู้เขียนบทความและงานเขียนเชิงปรัชญาชีวิต">
+  <section class="about-hero">
+    <div class="profile-image-wrapper">
+      <Image src={profileImage} alt="Mickey — ผู้เขียน" class="profile-image" />
+    </div>
+    <div class="hero-text">
+      <p class="hero-label">ผู้เขียน</p>
+      <h1>Mickey</h1>
+      <p class="hero-tagline">นักเขียน · นักคิด · ผู้แสวงหาความหมาย</p>
+    </div>
+  </section>
+
+  <section class="about-content">
+    <div class="about-block">
+      <h2>เกี่ยวกับข้าพเจ้า</h2>
+      <p>
+        ข้าพเจ้าเป็นผู้ที่หลงใหลในการเขียนและการครุ่นคิด งานเขียนของข้าพเจ้ามักเกิดจากการสังเกตชีวิตรอบตัว
+        ตั้งแต่ความเงียบในยามค่ำคืน ไปจนถึงความซับซ้อนของจิตใจมนุษย์ ข้าพเจ้าเชื่อว่าการเขียนคือการเดินทาง
+        เข้าสู่ส่วนลึกของตัวเอง และบางครั้งก็พาเราไปยังที่ที่เราไม่คาดคิด
+      </p>
+      <p>
+        การเขียนเป็นเหมือนลมหายใจสำหรับข้าพเจ้า เป็นวิธีการทำความเข้าใจโลกและตัวเอง
+        ทุกตัวอักษรที่เขียนลงไปคือความพยายามที่จะจับต้องสิ่งที่จับต้องไม่ได้ — ความรู้สึก ความคิด
+        และแก่นแท้ของการมีชีวิตอยู่
+      </p>
+    </div>
+
+    <div class="about-block">
+      <h2>แรงบันดาลใจ</h2>
+      <p>
+        ข้าพเจ้าได้รับแรงบันดาลใจจากหลายสิ่ง ไม่ว่าจะเป็นวรรณกรรมคลาสสิก ปรัชญาตะวันออก
+        หรือแม้แต่บทสนทนาเล็กๆ ในชีวิตประจำวัน ข้าพเจ้าเชื่อว่าทุกสิ่งรอบตัวล้วนมีเรื่องราวที่รอให้ถูกค้นพบ
+      </p>
+    </div>
+
+    <div class="interests-section">
+      <h2>สิ่งที่สนใจ</h2>
+      <div class="interests-grid">
+        <div class="interest-card">
+          <span class="interest-icon">✍️</span>
+          <h3>การเขียน</h3>
+          <p>สำรวจความคิดผ่านตัวอักษร เขียนเพื่อเข้าใจโลกและตัวเอง</p>
+        </div>
+        <div class="interest-card">
+          <span class="interest-icon">📚</span>
+          <h3>วรรณกรรมและการดนตรี</h3>
+          <p>อ่านทั้งวรรณกรรมไทยและต่างประเทศ และหาแรงบันดาลใจจากเสียงดนตรี</p>
+        </div>
+        <div class="interest-card">
+          <span class="interest-icon">🧘</span>
+          <h3>ปรัชญา</h3>
+          <p>ศึกษาปรัชญาชีวิตและคำสอนที่ช่วยให้เข้าใจธรรมชาติของจิตใจ</p>
+        </div>
+        <div class="interest-card">
+          <span class="interest-icon">🌿</span>
+          <h3>ธรรมชาติ</h3>
+          <p>หาความสงบจากธรรมชาติ และค้นหาแรงบันดาลใจจากความเงียบ</p>
+        </div>
+        <div class="interest-card">
+          <span class="interest-icon">💎</span>
+          <h3>ความจริง</h3>
+          <p>แสวงหาความจริงที่ซ่อนอยู่ภายใต้สิ่งที่ปรากฏ และตั้งคำถามกับสิ่งที่คนส่วนใหญ่ยอมรับ</p>
+        </div>
+        <div class="interest-card">
+          <span class="interest-icon">🚶</span>
+          <h3>การเดินทาง</h3>
+          <p>เดินทางเพื่อค้นพบมุมมองใหม่ ทั้งการเดินทางภายนอกและการเดินทางภายในจิตใจ</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-block contact-block">
+      <h2>ติดต่อ</h2>
+      <p>
+        หากคุณต้องการพูดคุย แลกเปลี่ยนความคิดเห็น หรือเพียงแค่ทักทาย
+        สามารถติดต่อข้าพเจ้าได้ผ่าน Nostr
+      </p>
+      <div class="nostr-contact">
+        <div class="nostr-qr-wrapper">
+          <canvas id="nostr-qr"></canvas>
+        </div>
+        <div class="nostr-info">
+          <div class="nostr-label">
+            <span class="nostr-icon">🟣</span>
+            <span>Nostr</span>
+          </div>
+          <p class="nostr-address" id="nostr-address">npub1x2sk4uhj0vz3ndg25wfcluzwnafldy58lm2d8ankmutd0jz9jxyqhp8es6</p>
+          <button class="copy-btn" id="copy-nostr-btn" type="button">
+            <span class="copy-icon" id="copy-icon">📋</span>
+            <span id="copy-text">คัดลอก</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="about-footer">
+    <a href="/" class="back-link">← กลับไปหน้าหลัก</a>
+  </footer>
+</Layout>
+
+<style>
+  /* Hero Section */
+  .about-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 3.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .profile-image-wrapper {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 1.8rem;
+    border: 3px solid var(--color-border-light);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  }
+
+  .profile-image-wrapper:hover {
+    transform: scale(1.04);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  .profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-text {
+    max-width: 400px;
+  }
+
+  .hero-label {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 0.82rem;
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+    opacity: 0.85;
+  }
+
+  h1 {
+    font-family: var(--font-heading);
+    font-size: 2.4rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: 0.6rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-tagline {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+  }
+
+  /* Content Sections */
+  .about-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .about-block h2 {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+    position: relative;
+    padding-bottom: 0.6rem;
+  }
+
+  .about-block h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 28px;
+    height: 2px;
+    background-color: var(--color-accent);
+    border-radius: 2px;
+    opacity: 0.6;
+  }
+
+  .about-block p {
+    color: var(--color-text-soft);
+    font-size: 0.95rem;
+    line-height: 2;
+    margin-bottom: 1rem;
+  }
+
+  .about-block p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Interests Section */
+  .interests-section h2 {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: 1.4rem;
+    position: relative;
+    padding-bottom: 0.6rem;
+  }
+
+  .interests-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 28px;
+    height: 2px;
+    background-color: var(--color-accent);
+    border-radius: 2px;
+    opacity: 0.6;
+  }
+
+  .interests-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .interest-card {
+    padding: 1.4rem;
+    background-color: var(--color-surface);
+    border-radius: 10px;
+    border: 1px solid var(--color-border-light);
+    transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+  }
+
+  .interest-card:hover {
+    border-color: var(--color-border);
+    transform: translateY(-2px);
+  }
+
+  .interest-icon {
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 0.7rem;
+  }
+
+  .interest-card h3 {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: 0.4rem;
+  }
+
+  .interest-card p {
+    color: var(--color-muted);
+    font-size: 0.82rem;
+    line-height: 1.65;
+  }
+
+  /* Contact */
+  .contact-block p {
+    margin-bottom: 1.4rem;
+  }
+
+  .nostr-contact {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.8rem;
+    padding: 1.6rem;
+    border-radius: 12px;
+    border: 1px solid var(--color-border-light);
+    background-color: var(--color-surface);
+    transition: border-color 0.25s var(--ease);
+  }
+
+  .nostr-contact:hover {
+    border-color: var(--color-border);
+  }
+
+  .nostr-qr-wrapper {
+    flex-shrink: 0;
+    width: 140px;
+    height: 140px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 8px;
+    border: 1px solid var(--color-border-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nostr-qr-wrapper canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .nostr-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .nostr-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: 0.8rem;
+  }
+
+  .nostr-icon {
+    font-size: 1.1rem;
+  }
+
+  .nostr-address {
+    font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    word-break: break-all;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    padding: 0.6rem 0.8rem;
+    background-color: var(--color-bg);
+    border-radius: 6px;
+    border: 1px solid var(--color-border-light);
+    user-select: all;
+  }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background-color: var(--color-text);
+    color: var(--color-bg);
+    border: none;
+    padding: 0.5rem 1.1rem;
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s var(--ease), transform 0.15s var(--ease);
+    letter-spacing: 0.01em;
+  }
+
+  .copy-btn:hover {
+    background-color: var(--color-accent);
+    transform: translateY(-1px);
+  }
+
+  .copy-btn:active {
+    transform: translateY(0);
+  }
+
+  .copy-icon {
+    font-size: 0.85rem;
+  }
+
+  /* Footer */
+  .about-footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border-light);
+  }
+
+  .back-link {
+    display: inline-block;
+    font-size: 0.82rem;
+    color: var(--color-muted);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s var(--ease);
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
+  }
+
+  /* Responsive */
+  @media (max-width: 580px) {
+    .profile-image-wrapper {
+      width: 130px;
+      height: 130px;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+    }
+
+    .interests-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .nostr-contact {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .nostr-qr-wrapper {
+      width: 160px;
+      height: 160px;
+    }
+
+    .nostr-address {
+      font-size: 0.68rem;
+    }
+  }
+</style>
+
+<script>
+  // Minimal QR code generator using the QR Code API
+  document.addEventListener('DOMContentLoaded', () => {
+    const npub = 'npub1x2sk4uhj0vz3ndg25wfcluzwnafldy58lm2d8ankmutd0jz9jxyqhp8es6';
+    const canvas = document.getElementById('nostr-qr') as HTMLCanvasElement;
+
+    if (canvas) {
+      // Use a QR code API to generate the image, then draw on canvas
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        const size = 300;
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.imageSmoothingEnabled = false;
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, size, size);
+          ctx.drawImage(img, 0, 0, size, size);
+        }
+      };
+      img.onerror = () => {
+        // Fallback: show text if QR generation fails
+        const wrapper = canvas.parentElement;
+        if (wrapper) {
+          wrapper.innerHTML = '<p style="font-size:0.7rem;color:#7a756e;text-align:center;padding:0.5rem;">QR Code</p>';
+        }
+      };
+      img.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(npub)}&margin=8`;
+    }
+
+    // Copy button
+    const copyBtn = document.getElementById('copy-nostr-btn');
+    const copyText = document.getElementById('copy-text');
+    const copyIcon = document.getElementById('copy-icon');
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(npub);
+          if (copyText) copyText.textContent = 'คัดลอกแล้ว!';
+          if (copyIcon) copyIcon.textContent = '✅';
+          setTimeout(() => {
+            if (copyText) copyText.textContent = 'คัดลอก';
+            if (copyIcon) copyIcon.textContent = '📋';
+          }, 2000);
+        } catch {
+          // Fallback for older browsers
+          const textarea = document.createElement('textarea');
+          textarea.value = npub;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+          if (copyText) copyText.textContent = 'คัดลอกแล้ว!';
+          if (copyIcon) copyIcon.textContent = '✅';
+          setTimeout(() => {
+            if (copyText) copyText.textContent = 'คัดลอก';
+            if (copyIcon) copyIcon.textContent = '📋';
+          }, 2000);
+        }
+      });
+    }
+  });
+</script>

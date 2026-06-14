@@ -1,0 +1,175 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const music = await getCollection('music');
+music.sort((a, b) => a.data.number - b.data.number);
+---
+
+<Layout title="บทเพลง — Mickey's Writing" description="รวมบทเพลงที่แต่งและบันทึกเสียง โดย Mickey">
+  <section class="hero">
+    <p class="hero-label">บทเพลง</p>
+    <h1>เสียงจากภายใน</h1>
+    <p class="hero-sub">รวมบทเพลงที่ถ่ายทอดความรู้สึก ความคิด และประสบการณ์ผ่านท่วงทำนอง</p>
+  </section>
+
+  <ul class="music-list">
+    {music.map((track) => (
+      <li class="music-item">
+        <a href={`/music/${track.slug}`}>
+          <span class="number">
+            {['I','II','III','IV','V','VI','VII','VIII','IX','X'][track.data.number - 1]}
+          </span>
+          <div class="music-info">
+            <h2>{track.data.title}</h2>
+            {track.data.excerpt && (
+              <p class="excerpt">{track.data.excerpt}</p>
+            )}
+          </div>
+          <span class="play-icon">▶</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</Layout>
+
+<style>
+  /* Hero */
+  .hero {
+    margin-bottom: 3rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-label {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.8rem;
+    opacity: 0.85;
+  }
+
+  h1 {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: 0.75rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-sub {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    max-width: 480px;
+  }
+
+  /* Music List */
+  .music-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .music-item a {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.4rem;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--color-border-light);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: background-color 0.2s var(--ease);
+    position: relative;
+  }
+
+  .music-item a::after {
+    content: '';
+    position: absolute;
+    left: -0.75rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-accent);
+    border-radius: 2px;
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 0.2s var(--ease);
+  }
+
+  .music-item a:hover::after {
+    transform: scaleY(1);
+  }
+
+  .music-item a:hover .number {
+    color: var(--color-accent);
+  }
+
+  .music-item a:hover h2 {
+    color: var(--color-accent);
+  }
+
+  .music-item a:hover .play-icon {
+    color: var(--color-accent);
+    transform: scale(1.15);
+  }
+
+  .number {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 0.78rem;
+    color: var(--color-border);
+    min-width: 1.8rem;
+    padding-top: 0.35rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    transition: color 0.2s var(--ease);
+  }
+
+  .music-info {
+    flex: 1;
+    padding-right: 0.5rem;
+  }
+
+  h2 {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.35rem;
+    line-height: 1.4;
+    color: var(--color-text-soft);
+    transition: color 0.2s var(--ease);
+  }
+
+  .excerpt {
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .play-icon {
+    color: var(--color-border);
+    font-size: 0.85rem;
+    padding-top: 0.3rem;
+    transition: transform 0.2s var(--ease), color 0.2s var(--ease);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 420px) {
+    h1 {
+      font-size: 1.75rem;
+    }
+    .music-item a {
+      gap: 1rem;
+    }
+  }
+</style>
