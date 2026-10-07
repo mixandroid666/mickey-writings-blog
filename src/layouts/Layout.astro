@@ -5,7 +5,7 @@ interface Props {
   title: string;
   description?: string;
 }
-const { title, description = 'งานเขียนของ Mickey' } = Astro.props;
+const { title, description = 'งานเขียนของ Breeze' } = Astro.props;
 ---
 
 <!doctype html>
@@ -26,7 +26,7 @@ const { title, description = 'งานเขียนของ Mickey' } = Astr
   <body>
     <header>
       <nav>
-        <a href="/" class="site-title">Mickey's Writing</a>
+        <a href="/" class="site-title">Breeze's Writing</a>
         <div class="nav-links">
           <a href="/" class="nav-link">งานเขียน</a>
           <a href="/music" class="nav-link">บทเพลง</a>
@@ -38,7 +38,7 @@ const { title, description = 'งานเขียนของ Mickey' } = Astr
       <slot />
     </main>
     <footer>
-      <p>© {new Date().getFullYear()} Mickey's Writing</p>
+      <p>© {new Date().getFullYear()} Breeze's Writing</p>
     </footer>
   </body>
 </html>
