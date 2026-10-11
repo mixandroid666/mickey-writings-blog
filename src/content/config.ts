@@ -5,6 +5,7 @@ const writings = defineCollection({
   schema: z.object({
     title: z.string(),
     number: z.number(),
+    language: z.enum(['th', 'en']).default('th'),
     excerpt: z.string().optional(),
   }),
 });
@@ -16,6 +17,8 @@ const music = defineCollection({
     number: z.number(),
     excerpt: z.string().optional(),
     audioFile: z.string(),
+    titleEn: z.string().optional(),
+    excerptEn: z.string().optional(),
   }),
 });
 

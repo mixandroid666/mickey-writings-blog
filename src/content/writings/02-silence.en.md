@@ -1,0 +1,18 @@
+---
+title: "The Sound of Silence"
+number: 2
+language: en
+excerpt: "Silence is simple. We only have to sit in a room without speaking, and silence appears at once. Yet silence is also strange. When we take ourselves into the woods and mountains, we"
+---
+
+Silence is simple. We only have to sit in a room without speaking, and silence appears at once. Yet silence is also strange. When we take ourselves into the woods and mountains, we suddenly say, ‘How peaceful and quiet it is here,’ even with the wind, the birds, and all the insects around us. Perhaps the sounds of nature, or sounds that do not bother us, are another kind of silence.
+
+But when we turn back to the city, we find that silence is very hard to come by. Engines, electrical appliances, and people talking to one another: all of these make it hard to find quiet in a big city.
+
+At merit-making gatherings or celebrations for someone entering the monkhood, relatives and close friends come together to share in the good deed. Somehow it has become a tradition that such events must have a full set of lights and loudspeakers, until even talking becomes difficult. People have to shout through the holes in their faces to ask one another how life has been, sitting around banquet tables while popular songs blast through the speakers. Some songs carry double meanings and talk about sex right there in the temple, which people who call themselves Buddhists say is improper. There is also drinking, which breaks the fifth precept, one of the basic rules of their faith.
+
+Sometimes friends who have not seen one another for years meet at someone’s house, and there must still be loud music, as though it were the soundtrack to the film of their lives.
+
+Once, I had the chance to ride in a good friend’s four-wheeled vehicle. He offered to drive me himself because he wanted to talk and share things with me. At the same time, he played music loudly enough to get in the way of our conversation. Talking was difficult. We kept having to repeat our questions and answers. All the while, he enjoyed the songs so much that he forgot I was sitting beside him.
+
+I believe silence gives us a great deal. Its lonely stillness lets us stop and think. It helps us relax, free from disturbance. Silence is also a fine weapon in an argument. It protects us from the ruin brought on by our ego’s sudden anger. At least we cannot bring shame upon ourselves if we do not speak. Let those people release their egos and let them writhe through the holes in their own faces. Be silent. Stay in silence.

@@ -4,12 +4,17 @@ import { ClientRouter } from 'astro:transitions';
 interface Props {
   title: string;
   description?: string;
+  locale?: 'th' | 'en';
+  titleEn?: string;
+  descriptionEn?: string;
+  lockedLocale?: 'th' | 'en';
+  localePaths?: { th: string; en: string };
 }
-const { title, description = 'งานเขียนของ Breeze' } = Astro.props;
+const { title, description = 'งานเขียนของ Breeze', locale = 'th', titleEn, descriptionEn, lockedLocale, localePaths } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="th">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,14 +28,27 @@ const { title, description = 'งานเขียนของ Breeze' } = Astr
     />
     <ClientRouter />
   </head>
-  <body>
+  <body data-title-th={title} data-title-en={titleEn || title} data-description-th={description} data-description-en={descriptionEn || description} data-locked-locale={lockedLocale}>
     <header>
       <nav>
         <a href="/" class="site-title">Breeze's Writing</a>
         <div class="nav-links">
-          <a href="/" class="nav-link">งานเขียน</a>
-          <a href="/music" class="nav-link">บทเพลง</a>
-          <a href="/about" class="nav-link">เกี่ยวกับ</a>
+          <a href="/" class="nav-link" data-th="งานเขียน" data-en="Writing">งานเขียน</a>
+          <a href="/music" class="nav-link" data-th="บทเพลง" data-en="Music">บทเพลง</a>
+          <a href="/about" class="nav-link" data-th="เกี่ยวกับ" data-en="About">เกี่ยวกับ</a>
+        </div>
+        <div class="global-language-switch" role="group" aria-label="Language">
+          {localePaths ? (
+            <>
+              <a href={localePaths.th} data-language="th" aria-current={locale === 'th' ? 'page' : undefined}>ไทย</a>
+              <a href={localePaths.en} data-language="en" aria-current={locale === 'en' ? 'page' : undefined}>English</a>
+            </>
+          ) : (
+            <>
+              <button type="button" data-language="th" aria-pressed="true">ไทย</button>
+              <button type="button" data-language="en" aria-pressed="false">English</button>
+            </>
+          )}
         </div>
       </nav>
     </header>
@@ -38,7 +56,7 @@ const { title, description = 'งานเขียนของ Breeze' } = Astr
       <slot />
     </main>
     <footer>
-      <p>© {new Date().getFullYear()} Breeze's Writing</p>
+      <p data-th={`© ${new Date().getFullYear()} Breeze's Writing`} data-en={`© ${new Date().getFullYear()} Breeze's Writing`}>© {new Date().getFullYear()} Breeze's Writing</p>
     </footer>
   </body>
 </html>
@@ -107,6 +125,7 @@ const { title, description = 'งานเขียนของ Breeze' } = Astr
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0.35rem;
   }
 
   .site-title {
@@ -130,6 +149,10 @@ const { title, description = 'งานเขียนของ Breeze' } = Astr
     align-items: center;
     gap: 0.35rem;
   }
+
+  .global-language-switch { display: flex; align-items: center; gap: 0.2rem; flex-shrink: 0; margin-left: 0.25rem; }
+  .global-language-switch button, .global-language-switch a { border: 1px solid transparent; border-radius: 999px; background: transparent; color: var(--color-muted); padding: 0.25rem 0.55rem; cursor: pointer; font: inherit; font-size: 0.72rem; white-space: nowrap; }
+  .global-language-switch button[aria-pressed="true"], .global-language-switch a[aria-current="page"] { background: var(--color-accent); border-color: var(--color-accent); color: white; }
 
   .nav-link {
     font-family: var(--font-body);
@@ -185,10 +208,68 @@ const { title, description = 'งานเขียนของ Breeze' } = Astr
     }
     .nav-links {
       gap: 0.15rem;
+      margin-left: auto;
     }
     .nav-link {
       font-size: 0.82rem;
       padding: 0.35rem 0.65rem;
     }
+    nav { display: grid; grid-template-columns: 1fr auto; row-gap: 0.35rem; }
+    .site-title { grid-column: 1 / -1; }
+    .nav-links { grid-column: 1; margin-left: 0; }
+    .global-language-switch { grid-column: 2; grid-row: 2; margin-left: 0; }
   }
 </style>
+
+<script>
+  const languageStorageKey = 'writing-language';
+
+  function applySiteLanguage(language: 'th' | 'en') {
+    document.documentElement.lang = language;
+    document.querySelectorAll<HTMLElement>('[data-th][data-en]').forEach((element) => {
+      element.textContent = element.dataset[language] || '';
+    });
+    document.querySelectorAll<HTMLAnchorElement>('[data-th-href][data-en-href]').forEach((link) => {
+      link.href = link.dataset[language === 'en' ? 'enHref' : 'thHref'] || link.href;
+    });
+    document.querySelectorAll<HTMLElement>('[data-th-aria-label][data-en-aria-label]').forEach((element) => {
+      element.setAttribute('aria-label', element.dataset[language === 'en' ? 'enAriaLabel' : 'thAriaLabel'] || '');
+    });
+    document.querySelectorAll<HTMLImageElement>('[data-th-alt][data-en-alt]').forEach((image) => {
+      image.alt = image.dataset[language === 'en' ? 'enAlt' : 'thAlt'] || '';
+    });
+    document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[data-th-placeholder][data-en-placeholder]').forEach((element) => {
+      element.placeholder = element.dataset[language === 'en' ? 'enPlaceholder' : 'thPlaceholder'] || '';
+    });
+    document.querySelectorAll<HTMLElement>('[data-language-block]').forEach((element) => {
+      element.hidden = element.dataset.languageBlock !== language;
+    });
+
+    const body = document.body;
+    document.title = body.dataset[language === 'en' ? 'titleEn' : 'titleTh'] || document.title;
+    const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (description) description.content = body.dataset[language === 'en' ? 'descriptionEn' : 'descriptionTh'] || description.content;
+
+    document.querySelectorAll<HTMLButtonElement>('.global-language-switch button').forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.language === language));
+    });
+    document.querySelectorAll<HTMLAnchorElement>('.global-language-switch a[data-language]').forEach((link) => {
+      link.setAttribute('aria-current', link.dataset.language === language ? 'page' : 'false');
+    });
+    localStorage.setItem(languageStorageKey, language);
+    document.dispatchEvent(new CustomEvent('site-language-change', { detail: { language } }));
+  }
+
+  function initializeSiteLanguage() {
+    const body = document.body;
+    const lockedLocale = body.dataset.lockedLocale as 'th' | 'en' | undefined;
+    const savedLocale = localStorage.getItem(languageStorageKey) as 'th' | 'en' | null;
+    applySiteLanguage(lockedLocale || savedLocale || 'th');
+    document.querySelectorAll<HTMLButtonElement>('.global-language-switch button').forEach((button) => {
+      button.onclick = () => applySiteLanguage(button.dataset.language === 'en' ? 'en' : 'th');
+    });
+  }
+
+  document.addEventListener('astro:page-load', initializeSiteLanguage);
+  initializeSiteLanguage();
+</script>

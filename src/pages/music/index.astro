@@ -6,11 +6,11 @@ const music = await getCollection('music');
 music.sort((a, b) => a.data.number - b.data.number);
 ---
 
-<Layout title="บทเพลง — Breeze's Writing" description="รวมบทเพลงที่แต่งและบันทึกเสียง โดย Breeze">
+<Layout title="บทเพลง — Breeze's Writing" titleEn="Music — Breeze's Writing" description="รวมบทเพลงที่แต่งและบันทึกเสียง โดย Breeze" descriptionEn="Songs written and recorded by Breeze.">
   <section class="hero">
-    <p class="hero-label">บทเพลง</p>
-    <h1>เสียงจากภายใน</h1>
-    <p class="hero-sub">รวมบทเพลงที่ถ่ายทอดความรู้สึก ความคิด และประสบการณ์ผ่านท่วงทำนอง</p>
+    <p class="hero-label" data-th="บทเพลง" data-en="Music">บทเพลง</p>
+    <h1 data-th="เสียงจากภายใน" data-en="Sounds from within">เสียงจากภายใน</h1>
+    <p class="hero-sub" data-th="รวมบทเพลงที่ถ่ายทอดความรู้สึก ความคิด และประสบการณ์ผ่านท่วงทำนอง" data-en="Songs that share feelings, thoughts, and experiences through music.">รวมบทเพลงที่ถ่ายทอดความรู้สึก ความคิด และประสบการณ์ผ่านท่วงทำนอง</p>
   </section>
 
   <ul class="music-list">
@@ -21,9 +21,9 @@ music.sort((a, b) => a.data.number - b.data.number);
             {['I','II','III','IV','V','VI','VII','VIII','IX','X'][track.data.number - 1]}
           </span>
           <div class="music-info">
-            <h2>{track.data.title}</h2>
+            <h2 data-th={track.data.title} data-en={track.data.titleEn || track.data.title}>{track.data.title}</h2>
             {track.data.excerpt && (
-              <p class="excerpt">{track.data.excerpt}</p>
+              <p class="excerpt" data-th={track.data.excerpt} data-en={track.data.excerptEn || track.data.excerpt}>{track.data.excerpt}</p>
             )}
           </div>
           <span class="play-icon">▶</span>

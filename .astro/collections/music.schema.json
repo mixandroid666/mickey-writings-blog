@@ -16,6 +16,12 @@
         "audioFile": {
           "type": "string"
         },
+        "titleEn": {
+          "type": "string"
+        },
+        "excerptEn": {
+          "type": "string"
+        },
         "$schema": {
           "type": "string"
         }

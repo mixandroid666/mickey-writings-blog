@@ -1,0 +1,16 @@
+---
+title: "The Last Journey"
+number: 8
+language: en
+excerpt: "We human beings are held within the limits of space and time. We need time to move from one place to another. Some call this a human limit, a blind spot we cannot step beyond. Othe"
+---
+
+We human beings are held within the limits of space and time. We need time to move from one place to another. Some call this a human limit, a blind spot we cannot step beyond. Others call it a gift from the Creator. We can use this limit to travel, see places, and meet new things. Perhaps this is a kind of happiness.
+
+Our journey through space is simple. We only move ourselves to another place. Along the way, we may find strange new things, unfamiliar sights, and fellow human beings whose looks, languages, and beliefs differ from ours. I see this as a kind of experience that is both rich and direct. Going somewhere we have never been is like ‘unlocking the map’ in terms of space. We might call it a ‘measure’ of life, or of ‘how much we have made of life,’ as we keep stepping into new places. How strange that space seems to have no limit. We cannot know where the universe ends, or what is smallest or largest. We can only explore and make estimates.
+
+As for a journey through time, I believe we can only look back into the past. Thankfully, we have something called ‘records.’ They let us learn the stories of the peoples and civilizations that came before us. Human progress is truly wonderful. We know how the results of today came from the causes of that time. But one beautiful limit is that we cannot know the future. We can only judge and guess. I find this fun and exciting.
+
+There is another journey that every one of us is certain to make. It is the last journey, through the dimensions of space and time. It is ‘death.’ Death is strange. It keeps reminding us that we do not last forever. It keeps reminding us that we are not so strong after all. At first, I was deeply afraid of death. But I have come to understand it and get to know it a little. And so I have begun, with a trembling hand, to reach out in friendship. Death is a door to another world, one we cannot know, because no one can return to tell us what it is like. To me, it is a passage, like going through an immigration checkpoint between this world and the next. We are about to leave our three-dimensional way of seeing for a new kind of awareness that we cannot understand. This journey matters. It is about to blow apart our human logic and our weak ways of thinking, carrying us toward something new. For I believe that we human beings are spirits wrapped in bodies. When the body falls away, the spirit keeps going.
+
+Imagine how exciting it would be to enter a land we have never known. We might even be beyond the dimensions of space and time. I only hope there will be a motorcycle for me to ride there.

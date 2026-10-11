@@ -1,92 +1,86 @@
 ---
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import profileImage from '../assets/88426601_10214395664678959_2333448950163439616_n.jpg';
+import profileImage from '../assets/about-profile.jpeg';
 ---
 
-<Layout title="เกี่ยวกับ Breeze — Breeze's Writing" description="ทำความรู้จักกับ Breeze ผู้เขียนบทความและงานเขียนเชิงปรัชญาชีวิต">
+<Layout title="เกี่ยวกับ Breeze — Breeze's Writing" titleEn="About Breeze — Breeze's Writing" description="ทำความรู้จักกับ Breeze ผู้เขียนบทความและงานเขียนเชิงปรัชญาชีวิต" descriptionEn="Meet Breeze, writer of essays on philosophy and life.">
   <section class="about-hero">
     <div class="profile-image-wrapper">
-      <Image src={profileImage} alt="Breeze — ผู้เขียน" class="profile-image" />
+      <Image src={profileImage} alt="Breeze — ผู้เขียน" data-th-alt="Breeze — ผู้เขียน" data-en-alt="Breeze — The writer" class="profile-image" />
     </div>
     <div class="hero-text">
-      <p class="hero-label">ผู้เขียน</p>
+      <p class="hero-label" data-th="ผู้เขียน" data-en="The writer">ผู้เขียน</p>
       <h1>Breeze</h1>
-      <p class="hero-tagline">นักเขียน · นักคิด · ผู้แสวงหาความหมาย</p>
+      <p class="hero-tagline" data-th="นักเขียน · นักคิด · ผู้แสวงหาความหมาย" data-en="Writer · Thinker · Seeker of meaning">นักเขียน · นักคิด · ผู้แสวงหาความหมาย</p>
     </div>
   </section>
 
   <section class="about-content">
     <div class="about-block">
-      <h2>เกี่ยวกับข้าพเจ้า</h2>
-      <p>
-        ข้าพเจ้าเป็นผู้ที่หลงใหลในการเขียนและการครุ่นคิด งานเขียนของข้าพเจ้ามักเกิดจากการสังเกตชีวิตรอบตัว
-        ตั้งแต่ความเงียบในยามค่ำคืน ไปจนถึงความซับซ้อนของจิตใจมนุษย์ ข้าพเจ้าเชื่อว่าการเขียนคือการเดินทาง
-        เข้าสู่ส่วนลึกของตัวเอง และบางครั้งก็พาเราไปยังที่ที่เราไม่คาดคิด
+      <h2 data-th="เกี่ยวกับข้าพเจ้า" data-en="About me">เกี่ยวกับข้าพเจ้า</h2>
+      <p data-th="ข้าพเจ้าเป็นผู้ที่หลงใหลในการเขียนและการครุ่นคิด งานเขียนของข้าพเจ้ามักเกิดจากการสังเกตชีวิตรอบตัว ตั้งแต่ความเงียบในยามค่ำคืน ไปจนถึงความซับซ้อนของจิตใจมนุษย์ ข้าพเจ้าเชื่อว่าการเขียนคือการเดินทางเข้าสู่ส่วนลึกของตัวเอง และบางครั้งก็พาเราไปยังที่ที่เราไม่คาดคิด" data-en="I love writing and reflection. My work often begins with observing everyday life, from the quiet of the night to the complexity of the human mind. I believe writing is a journey into ourselves, and sometimes it takes us somewhere unexpected.">
+        ข้าพเจ้าเป็นผู้ที่หลงใหลในการเขียนและการครุ่นคิด งานเขียนของข้าพเจ้ามักเกิดจากการสังเกตชีวิตรอบตัว ตั้งแต่ความเงียบในยามค่ำคืน ไปจนถึงความซับซ้อนของจิตใจมนุษย์ ข้าพเจ้าเชื่อว่าการเขียนคือการเดินทางเข้าสู่ส่วนลึกของตัวเอง และบางครั้งก็พาเราไปยังที่ที่เราไม่คาดคิด
       </p>
-      <p>
-        การเขียนเป็นเหมือนลมหายใจสำหรับข้าพเจ้า เป็นวิธีการทำความเข้าใจโลกและตัวเอง
-        ทุกตัวอักษรที่เขียนลงไปคือความพยายามที่จะจับต้องสิ่งที่จับต้องไม่ได้ — ความรู้สึก ความคิด
-        และแก่นแท้ของการมีชีวิตอยู่
+      <p data-th="การเขียนเป็นเหมือนลมหายใจสำหรับข้าพเจ้า เป็นวิธีการทำความเข้าใจโลกและตัวเอง ทุกตัวอักษรที่เขียนลงไปคือความพยายามที่จะจับต้องสิ่งที่จับต้องไม่ได้ — ความรู้สึก ความคิด และแก่นแท้ของการมีชีวิตอยู่" data-en="Writing is like breathing to me. It helps me understand the world and myself. Every word is an attempt to give shape to what cannot be held: feelings, thoughts, and the heart of being alive.">
+        การเขียนเป็นเหมือนลมหายใจสำหรับข้าพเจ้า เป็นวิธีการทำความเข้าใจโลกและตัวเอง ทุกตัวอักษรที่เขียนลงไปคือความพยายามที่จะจับต้องสิ่งที่จับต้องไม่ได้ — ความรู้สึก ความคิด และแก่นแท้ของการมีชีวิตอยู่
       </p>
     </div>
 
     <div class="about-block">
-      <h2>แรงบันดาลใจ</h2>
-      <p>
-        ข้าพเจ้าได้รับแรงบันดาลใจจากหลายสิ่ง ไม่ว่าจะเป็นวรรณกรรมคลาสสิก ปรัชญาตะวันออก
-        หรือแม้แต่บทสนทนาเล็กๆ ในชีวิตประจำวัน ข้าพเจ้าเชื่อว่าทุกสิ่งรอบตัวล้วนมีเรื่องราวที่รอให้ถูกค้นพบ
+      <h2 data-th="แรงบันดาลใจ" data-en="Inspiration">แรงบันดาลใจ</h2>
+      <p data-th="ข้าพเจ้าได้รับแรงบันดาลใจจากหลายสิ่ง ไม่ว่าจะเป็นวรรณกรรมคลาสสิก ปรัชญาตะวันออก หรือแม้แต่บทสนทนาเล็กๆ ในชีวิตประจำวัน ข้าพเจ้าเชื่อว่าทุกสิ่งรอบตัวล้วนมีเรื่องราวที่รอให้ถูกค้นพบ" data-en="I find inspiration in many things: classic literature, Eastern philosophy, and even small conversations in daily life. I believe there are stories waiting to be found all around us.">
+        ข้าพเจ้าได้รับแรงบันดาลใจจากหลายสิ่ง ไม่ว่าจะเป็นวรรณกรรมคลาสสิก ปรัชญาตะวันออก หรือแม้แต่บทสนทนาเล็กๆ ในชีวิตประจำวัน ข้าพเจ้าเชื่อว่าทุกสิ่งรอบตัวล้วนมีเรื่องราวที่รอให้ถูกค้นพบ
       </p>
     </div>
 
     <div class="interests-section">
-      <h2>สิ่งที่สนใจ</h2>
+      <h2 data-th="สิ่งที่สนใจ" data-en="Interests">สิ่งที่สนใจ</h2>
       <div class="interests-grid">
         <div class="interest-card">
           <span class="interest-icon">✍️</span>
-          <h3>การเขียน</h3>
-          <p>สำรวจความคิดผ่านตัวอักษร เขียนเพื่อเข้าใจโลกและตัวเอง</p>
+          <h3 data-th="การเขียน" data-en="Writing">การเขียน</h3>
+          <p data-th="สำรวจความคิดผ่านตัวอักษร เขียนเพื่อเข้าใจโลกและตัวเอง" data-en="Exploring ideas through words, and writing to understand the world and myself.">สำรวจความคิดผ่านตัวอักษร เขียนเพื่อเข้าใจโลกและตัวเอง</p>
         </div>
         <div class="interest-card">
           <span class="interest-icon">📚</span>
-          <h3>วรรณกรรมและการดนตรี</h3>
-          <p>อ่านทั้งวรรณกรรมไทยและต่างประเทศ และหาแรงบันดาลใจจากเสียงดนตรี</p>
+          <h3 data-th="วรรณกรรมและการดนตรี" data-en="Literature and music">วรรณกรรมและการดนตรี</h3>
+          <p data-th="อ่านทั้งวรรณกรรมไทยและต่างประเทศ และหาแรงบันดาลใจจากเสียงดนตรี" data-en="Reading Thai and world literature, and finding inspiration in music.">อ่านทั้งวรรณกรรมไทยและต่างประเทศ และหาแรงบันดาลใจจากเสียงดนตรี</p>
         </div>
         <div class="interest-card">
           <span class="interest-icon">🧘</span>
-          <h3>ปรัชญา</h3>
-          <p>ศึกษาปรัชญาชีวิตและคำสอนที่ช่วยให้เข้าใจธรรมชาติของจิตใจ</p>
+          <h3 data-th="ปรัชญา" data-en="Philosophy">ปรัชญา</h3>
+          <p data-th="ศึกษาปรัชญาชีวิตและคำสอนที่ช่วยให้เข้าใจธรรมชาติของจิตใจ" data-en="Learning about life and ideas that help us understand the mind.">ศึกษาปรัชญาชีวิตและคำสอนที่ช่วยให้เข้าใจธรรมชาติของจิตใจ</p>
         </div>
         <div class="interest-card">
           <span class="interest-icon">🌿</span>
-          <h3>ธรรมชาติ</h3>
-          <p>หาความสงบจากธรรมชาติ และค้นหาแรงบันดาลใจจากความเงียบ</p>
+          <h3 data-th="ธรรมชาติ" data-en="Nature">ธรรมชาติ</h3>
+          <p data-th="หาความสงบจากธรรมชาติ และค้นหาแรงบันดาลใจจากความเงียบ" data-en="Finding peace in nature and inspiration in quiet moments.">หาความสงบจากธรรมชาติ และค้นหาแรงบันดาลใจจากความเงียบ</p>
         </div>
         <div class="interest-card">
           <span class="interest-icon">💎</span>
-          <h3>ความจริง</h3>
-          <p>แสวงหาความจริงที่ซ่อนอยู่ภายใต้สิ่งที่ปรากฏ และตั้งคำถามกับสิ่งที่คนส่วนใหญ่ยอมรับ</p>
+          <h3 data-th="ความจริง" data-en="Truth">ความจริง</h3>
+          <p data-th="แสวงหาความจริงที่ซ่อนอยู่ภายใต้สิ่งที่ปรากฏ และตั้งคำถามกับสิ่งที่คนส่วนใหญ่ยอมรับ" data-en="Looking for what lies beneath the surface and asking questions about what most people accept.">แสวงหาความจริงที่ซ่อนอยู่ภายใต้สิ่งที่ปรากฏ และตั้งคำถามกับสิ่งที่คนส่วนใหญ่ยอมรับ</p>
         </div>
         <div class="interest-card">
           <span class="interest-icon">🚶</span>
-          <h3>การเดินทาง</h3>
-          <p>เดินทางเพื่อค้นพบมุมมองใหม่ ทั้งการเดินทางภายนอกและการเดินทางภายในจิตใจ</p>
+          <h3 data-th="การเดินทาง" data-en="Travel">การเดินทาง</h3>
+          <p data-th="เดินทางเพื่อค้นพบมุมมองใหม่ ทั้งการเดินทางภายนอกและการเดินทางภายในจิตใจ" data-en="Discovering new views through journeys outside and within ourselves.">เดินทางเพื่อค้นพบมุมมองใหม่ ทั้งการเดินทางภายนอกและการเดินทางภายในจิตใจ</p>
         </div>
       </div>
     </div>
 
     <div class="about-block contact-block">
-      <h2>ติดต่อ</h2>
-      <p>
-        หากคุณต้องการพูดคุย แลกเปลี่ยนความคิดเห็น หรือเพียงแค่ทักทาย
-        สามารถติดต่อข้าพเจ้าได้ทางอีเมล
+      <h2 data-th="ติดต่อ" data-en="Contact">ติดต่อ</h2>
+      <p data-th="หากคุณต้องการพูดคุย แลกเปลี่ยนความคิดเห็น หรือเพียงแค่ทักทาย สามารถติดต่อข้าพเจ้าได้ทางอีเมล" data-en="If you would like to talk, share ideas, or simply say hello, you can reach me by email.">
+        หากคุณต้องการพูดคุย แลกเปลี่ยนความคิดเห็น หรือเพียงแค่ทักทาย สามารถติดต่อข้าพเจ้าได้ทางอีเมล
       </p>
       <a class="email-contact" href="mailto:major_seventh@live.com">major_seventh@live.com</a>
     </div>
   </section>
 
   <footer class="about-footer">
-    <a href="/" class="back-link">← กลับไปหน้าหลัก</a>
+    <a href="/" class="back-link" data-th="← กลับไปหน้าหลัก" data-en="← Back to home">← กลับไปหน้าหลัก</a>
   </footer>
 </Layout>
 

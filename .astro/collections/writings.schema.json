@@ -10,6 +10,14 @@
         "number": {
           "type": "number"
         },
+        "language": {
+          "type": "string",
+          "enum": [
+            "th",
+            "en"
+          ],
+          "default": "th"
+        },
         "excerpt": {
           "type": "string"
         },

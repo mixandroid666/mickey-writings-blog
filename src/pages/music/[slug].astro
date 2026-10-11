@@ -15,22 +15,24 @@ const { Content } = await track.render();
 
 const romanNumerals = ['I','II','III','IV','V','VI','VII','VIII','IX','X'];
 const numeral = romanNumerals[track.data.number - 1];
+const englishTitle = track.data.titleEn || track.data.title;
+const englishExcerpt = track.data.excerptEn || track.data.excerpt || '';
 
 // Read Supabase keys
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
 const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 ---
 
-<Layout title={`${track.data.title} — บทเพลง`} description={track.data.excerpt}>
+<Layout title={`${track.data.title} — บทเพลง`} titleEn={`${englishTitle} — Music`} description={track.data.excerpt} descriptionEn={englishExcerpt}>
   <article>
     <header class="article-header">
-      <a href="/music" class="back-link">← บทเพลงทั้งหมด</a>
+      <a href="/music" class="back-link" data-th="← บทเพลงทั้งหมด" data-en="← All music">← บทเพลงทั้งหมด</a>
       <div class="piece-label">
         <span class="numeral">{numeral}</span>
       </div>
-      <h1>{track.data.title}</h1>
+      <h1 data-th={track.data.title} data-en={englishTitle}>{track.data.title}</h1>
       {track.data.excerpt && (
-        <p class="article-excerpt">{track.data.excerpt}</p>
+        <p class="article-excerpt" data-th={track.data.excerpt} data-en={englishExcerpt}>{track.data.excerpt}</p>
       )}
     </header>
 
@@ -38,7 +40,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     <section class="player-section">
       <div class="player-card">
         <div class="player-info">
-          <span class="player-title">{track.data.title}</span>
+          <span class="player-title" data-th={track.data.title} data-en={englishTitle}>{track.data.title}</span>
           <span class="player-artist">Breeze</span>
         </div>
         <audio
@@ -47,7 +49,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
           preload="metadata"
         ></audio>
         <div class="player-controls">
-          <button id="play-btn" class="play-btn" type="button" aria-label="เล่นเพลง">
+          <button id="play-btn" class="play-btn" type="button" aria-label="เล่นเพลง" data-th-aria-label="เล่นเพลง" data-en-aria-label="Play song">
             <span id="play-icon">▶</span>
           </button>
           <div class="player-track">
@@ -61,7 +63,9 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
             </div>
           </div>
           <div class="volume-control">
-            <button id="volume-btn" class="volume-btn" type="button" aria-label="ปรับเสียง">🔊</button>
+            <button id="volume-btn" class="volume-btn" type="button" aria-label="ปิดเสียง" data-th-aria-label="ปิดเสียง" data-en-aria-label="Mute" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path class="volume-waves" d="M16 9a5 5 0 0 1 0 6m3-9a9 9 0 0 1 0 12"/><path class="volume-muted-mark" d="m16 9 5 6m0-6-5 6"/></svg>
+            </button>
             <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.8" class="volume-slider" />
           </div>
         </div>
@@ -80,34 +84,34 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
       data-supabase-key={supabaseKey}
     >
       <div class="comments-header">
-        <h3>ความคิดเห็น</h3>
+        <h3 data-th="ความคิดเห็น" data-en="Comments">ความคิดเห็น</h3>
       </div>
       <div id="comments-list" class="comments-list">
-        <p class="no-comments">กำลังโหลดความคิดเห็น...</p>
+        <p class="no-comments" data-th="กำลังโหลดความคิดเห็น..." data-en="Loading comments...">กำลังโหลดความคิดเห็น...</p>
       </div>
 
       <form id="comment-form" class="comment-form">
-        <h4>แบ่งปันความคิดเห็น</h4>
+        <h4 data-th="แบ่งปันความคิดเห็น" data-en="Share your thoughts">แบ่งปันความคิดเห็น</h4>
         <div class="form-group">
-          <label for="author-name">ชื่อของคุณ</label>
-          <input type="text" id="author-name" required placeholder="ชื่อของคุณ" />
+          <label for="author-name" data-th="ชื่อของคุณ" data-en="Your name">ชื่อของคุณ</label>
+          <input type="text" id="author-name" required placeholder="ชื่อของคุณ" data-th-placeholder="ชื่อของคุณ" data-en-placeholder="Your name" />
         </div>
         <div class="form-group">
-          <label for="comment-content">ข้อความ</label>
-          <textarea id="comment-content" required rows="4" placeholder="แบ่งปันความคิดเห็นของคุณ..."></textarea>
+          <label for="comment-content" data-th="ข้อความ" data-en="Comment">ข้อความ</label>
+          <textarea id="comment-content" required rows="4" placeholder="แบ่งปันความคิดเห็นของคุณ..." data-th-placeholder="แบ่งปันความคิดเห็นของคุณ..." data-en-placeholder="Share your thoughts..."></textarea>
         </div>
-        <button type="submit" id="submit-btn">ส่งความคิดเห็น</button>
+        <button type="submit" id="submit-btn" data-th="ส่งความคิดเห็น" data-en="Post comment">ส่งความคิดเห็น</button>
       </form>
     </section>
 
     <footer class="article-footer">
-      <a href="/music" class="back-link">← กลับไปบทเพลงทั้งหมด</a>
+      <a href="/music" class="back-link" data-th="← กลับไปบทเพลงทั้งหมด" data-en="← Back to all music">← กลับไปบทเพลงทั้งหมด</a>
     </footer>
   </article>
 </Layout>
 
 <script>
-  document.addEventListener('astro:page-load', () => {
+  function initializeMusicPage() {
     const audio = document.getElementById('audio-player') as HTMLAudioElement;
     const playBtn = document.getElementById('play-btn') as HTMLButtonElement;
     const playIcon = document.getElementById('play-icon') as HTMLSpanElement;
@@ -119,9 +123,14 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     const volumeBtn = document.getElementById('volume-btn') as HTMLButtonElement;
     const volumeSlider = document.getElementById('volume-slider') as HTMLInputElement;
 
-    if (!audio) return;
+    if (!audio || audio.dataset.playerInitialized === 'true') return;
+    audio.dataset.playerInitialized = 'true';
+    let isEnglish = localStorage.getItem('writing-language') === 'en';
 
     audio.volume = 0.8;
+    // A page reached through Astro's client router can swap in a fresh audio
+    // element without a full document load. Explicitly start its media load.
+    audio.load();
 
     function formatTime(seconds: number): string {
       if (isNaN(seconds)) return '0:00';
@@ -133,13 +142,21 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     // Play/Pause
     playBtn.addEventListener('click', () => {
       if (audio.paused) {
-        audio.play();
-        playIcon.textContent = '⏸';
+        audio.play().catch((error) => {
+          console.error('Audio playback could not start:', error);
+          playIcon.textContent = '▶';
+        });
       } else {
         audio.pause();
-        playIcon.textContent = '▶';
       }
     });
+
+    function updatePlayButton() {
+      playIcon.textContent = audio.paused ? '▶' : '⏸';
+      playBtn.setAttribute('aria-label', audio.paused ? (isEnglish ? 'Play song' : 'เล่นเพลง') : (isEnglish ? 'Pause song' : 'หยุดเพลงชั่วคราว'));
+    }
+    audio.addEventListener('play', updatePlayButton);
+    audio.addEventListener('pause', updatePlayButton);
 
     // Time update
     audio.addEventListener('timeupdate', () => {
@@ -153,6 +170,9 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     audio.addEventListener('loadedmetadata', () => {
       durationEl.textContent = formatTime(audio.duration);
     });
+    if (audio.readyState >= HTMLMediaElement.HAVE_METADATA) {
+      durationEl.textContent = formatTime(audio.duration);
+    }
 
     // Ended
     audio.addEventListener('ended', () => {
@@ -171,6 +191,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     // Volume
     volumeSlider.addEventListener('input', () => {
       audio.volume = parseFloat(volumeSlider.value);
+      if (audio.volume > 0) audio.muted = false;
       updateVolumeIcon();
     });
 
@@ -180,14 +201,12 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     });
 
     function updateVolumeIcon() {
-      if (audio.muted || audio.volume === 0) {
-        volumeBtn.textContent = '🔇';
-      } else if (audio.volume < 0.5) {
-        volumeBtn.textContent = '🔉';
-      } else {
-        volumeBtn.textContent = '🔊';
-      }
+      const muted = audio.muted || audio.volume === 0;
+      volumeBtn.classList.toggle('is-muted', muted);
+      volumeBtn.setAttribute('aria-pressed', String(audio.muted));
+      volumeBtn.setAttribute('aria-label', muted ? (isEnglish ? 'Unmute' : 'เปิดเสียง') : (isEnglish ? 'Mute' : 'ปิดเสียง'));
     }
+    updateVolumeIcon();
 
     // --- Comments Section Logic ---
     const section = document.querySelector('.comments-section') as HTMLElement;
@@ -203,7 +222,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
       const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
 
       if (!supabaseUrl || !supabaseKey) {
-        commentsList.innerHTML = `<p class="no-comments">ระบบความคิดเห็นยังไม่ได้ตั้งค่าการเชื่อมต่อ (กรุณาตั้งค่า PUBLIC_SUPABASE_URL และ PUBLIC_SUPABASE_ANON_KEY)</p>`;
+        commentsList.innerHTML = `<p class="no-comments">${isEnglish ? 'Comments are not configured yet.' : 'ระบบความคิดเห็นยังไม่ได้ตั้งค่าการเชื่อมต่อ (กรุณาตั้งค่า PUBLIC_SUPABASE_URL และ PUBLIC_SUPABASE_ANON_KEY)'}</p>`;
         form.style.display = 'none';
       } else {
         // Fetch comments
@@ -219,12 +238,12 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
             const comments = await res.json();
 
             if (comments.length === 0) {
-              commentsList.innerHTML = `<p class="no-comments">ยังไม่มีความคิดเห็น มาร่วมเป็นคนแรกที่แสดงความคิดเห็นกัน!</p>`;
+              commentsList.innerHTML = `<p class="no-comments">${isEnglish ? 'No comments yet. Be the first to share your thoughts!' : 'ยังไม่มีความคิดเห็น มาร่วมเป็นคนแรกที่แสดงความคิดเห็นกัน!'}</p>`;
               return;
             }
 
             commentsList.innerHTML = comments.map((comment: any) => {
-              const date = new Date(comment.created_at).toLocaleDateString('th-TH', {
+              const date = new Date(comment.created_at).toLocaleDateString(isEnglish ? 'en-US' : 'th-TH', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
@@ -246,7 +265,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
             }).join('');
           } catch (err) {
             console.error(err);
-            commentsList.innerHTML = `<p class="no-comments">ไม่สามารถโหลดความคิดเห็นได้ในขณะนี้</p>`;
+            commentsList.innerHTML = `<p class="no-comments">${isEnglish ? 'Comments could not be loaded.' : 'ไม่สามารถโหลดความคิดเห็นได้ในขณะนี้'}</p>`;
           }
         };
 
@@ -259,7 +278,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
           if (!author || !content) return;
 
           submitBtn.disabled = true;
-          submitBtn.textContent = 'กำลังส่ง...';
+          submitBtn.textContent = isEnglish ? 'Sending...' : 'กำลังส่ง...';
 
           try {
             const res = await fetch(`${supabaseUrl}/rest/v1/comments`, {
@@ -287,17 +306,29 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
             await fetchComments();
           } catch (err: any) {
             console.error(err);
-            alert(`เกิดข้อผิดพลาดในการส่งความคิดเห็น: ${err.message}\n\n(กรุณาตรวจสอบว่าได้สร้างตาราง comments และตั้งค่า RLS ใน Supabase เรียบร้อยแล้ว)`);
+            alert(isEnglish ? `Could not post comment: ${err.message}` : `เกิดข้อผิดพลาดในการส่งความคิดเห็น: ${err.message}\n\n(กรุณาตรวจสอบว่าได้สร้างตาราง comments และตั้งค่า RLS ใน Supabase เรียบร้อยแล้ว)`);
           } finally {
             submitBtn.disabled = false;
-            submitBtn.textContent = 'ส่งความคิดเห็น';
+            submitBtn.textContent = isEnglish ? 'Post comment' : 'ส่งความคิดเห็น';
           }
         });
+
+        document.addEventListener('site-language-change', ((event: CustomEvent<{ language: 'th' | 'en' }>) => {
+          isEnglish = event.detail.language === 'en';
+          updatePlayButton();
+          updateVolumeIcon();
+          fetchComments();
+        }) as EventListener);
 
         fetchComments();
       }
     }
-  });
+  }
+
+  document.addEventListener('astro:page-load', initializeMusicPage);
+  // Also cover the case where this page script runs after Astro's initial
+  // page-load event has already fired.
+  initializeMusicPage();
 </script>
 
 <style>
@@ -428,6 +459,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 
   .player-track {
     flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
@@ -485,30 +517,38 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
   .volume-control {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.55rem;
     flex-shrink: 0;
+    min-width: 118px;
   }
 
   .volume-btn {
     background: none;
     border: none;
-    font-size: 1rem;
     cursor: pointer;
-    padding: 0.2rem;
+    color: var(--color-muted);
+    display: grid;
+    place-items: center;
+    padding: 0.25rem;
     transition: transform 0.15s var(--ease);
   }
+
+  .volume-btn svg { width: 20px; height: 20px; fill: currentColor; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .volume-waves { fill: none; }
+  .volume-muted-mark { display: none; fill: none; }
+  .volume-btn.is-muted .volume-waves { display: none; }
+  .volume-btn.is-muted .volume-muted-mark { display: block; }
 
   .volume-btn:hover {
     transform: scale(1.1);
   }
 
   .volume-slider {
-    width: 70px;
-    height: 4px;
+    width: 76px;
+    height: 16px;
     -webkit-appearance: none;
     appearance: none;
-    background: var(--color-border-light);
-    border-radius: 4px;
+    background: transparent;
     outline: none;
     cursor: pointer;
   }
@@ -522,6 +562,8 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     cursor: pointer;
   }
 
+  .volume-slider::-webkit-slider-runnable-track { height: 4px; background: var(--color-border-light); border-radius: 4px; }
+
   .volume-slider::-moz-range-thumb {
     width: 12px;
     height: 12px;
@@ -530,6 +572,8 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     cursor: pointer;
     border: none;
   }
+
+  .volume-slider::-moz-range-track { height: 4px; background: var(--color-border-light); border-radius: 4px; }
 
   /* Content */
   .content {
@@ -721,8 +765,10 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 
     .volume-control {
       width: 100%;
-      justify-content: flex-end;
-      margin-top: 0.5rem;
+      min-width: 0;
+      justify-content: flex-start;
+      margin-top: 0.75rem;
+      padding-left: 3.25rem;
     }
 
     .comment-form {

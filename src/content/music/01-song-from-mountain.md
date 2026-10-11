@@ -1,9 +1,13 @@
 ---
 title: "บทขานจากขุนเขา"
+titleEn: "Echoes from the Mountains"
 number: 1
 excerpt: "บทเพลงที่ถ่ายทอดเสียงจากขุนเขา เสียงสะท้อนของธรรมชาติและความคิดที่เงียบงัน"
+excerptEn: "A song of mountain life, nature, and quiet reflection."
 audioFile: "/music/บทขานจากขุนเขา.mp3"
 ---
+
+<div data-language-block="th">
 
 *ดนตรี*
 
@@ -57,3 +61,64 @@ audioFile: "/music/บทขานจากขุนเขา.mp3"
 
 สายลมปลิวไสว หมอกเมฆไอคละคลุ้งป่า
 ลูกน้อยของฉันโตมา บ่มีป่าให้ได้เชยชม
+
+</div>
+
+<div data-language-block="en" hidden>
+
+## English translation
+
+*Music*
+
+The wind blows softly; mist drifts through the forest.
+People are clever; they bring the sky down to cover them as they sleep.
+
+*Music*
+
+I grew up here in the mountains; we are all one family.
+Our parents, aunts, uncles, and older cousins have always lived close to the sky.
+
+We had no electricity. We were given clothes to wear.
+In the evening, we made a fire and boiled water to share.
+
+Morning and evening, we brothers and sisters stayed close.
+Day and night, we lived here together year after year.
+
+I saw a road appear across the green land.
+Mother said there would soon be many roads like it.
+
+The child asked, “Why?”
+“The government will clear the land and give it to businesses,” she said.
+
+“What is a land concession? And who is an investor?” I asked my father.
+“A concession helps the investors. Investors are people with money.”
+
+*Music*
+
+The wind blows softly; mist drifts through the forest.
+The trees that once stood here are cut down and sold.
+
+The green land was once so beautiful; now it is ruined.
+More places to stay appeared, and more people came.
+
+Our friends on the hills were made to work for others.
+They had little choice, because money is something we need.
+
+Wherever I look, my worry will not go away.
+The forest, full of life, has had its life taken by greed.
+
+Mother, where are we now? Why have the trees grown thin?
+The home we once had has been taken and turned into money.
+
+I ask everyone: please do not come to harm our home.
+Come as kind visitors, with care, and leave it unharmed.
+
+*Music*
+
+The wind blows softly; mist drifts through the forest.
+My child has grown up, but there is no forest left to enjoy.
+
+</div>
+
+The wind blows softly; mist drifts through the forest.
+My child has grown up, but there is no forest left to enjoy.

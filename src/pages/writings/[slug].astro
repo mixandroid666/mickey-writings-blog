@@ -1,5 +1,5 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
@@ -12,8 +12,10 @@ export async function getStaticPaths() {
 
 const { piece } = Astro.props;
 const { Content } = await piece.render();
+const peer = (await getCollection('writings')).find((entry) => entry.data.number === piece.data.number && entry.data.language !== piece.data.language);
+const isEnglish = piece.data.language === 'en';
 
-const romanNumerals = ['I','II','III','IV','V','VI','VII','VIII','IX'];
+const romanNumerals = ['I','II','III','IV','V','VI','VII','VIII','IX','X'];
 const numeral = romanNumerals[piece.data.number - 1];
 
 // Read Supabase keys
@@ -21,10 +23,19 @@ const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL || '';
 const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 ---
 
-<Layout title={`${piece.data.title} — Breeze's Writing`} description={piece.data.excerpt}>
+<Layout
+  title={`${piece.data.title} — Breeze's Writing`}
+  description={piece.data.excerpt}
+  locale={piece.data.language}
+  lockedLocale={piece.data.language}
+  localePaths={{
+    th: `/writings/${piece.data.language === 'th' ? piece.slug : peer?.slug || piece.slug}`,
+    en: `/writings/${piece.data.language === 'en' ? piece.slug : peer?.slug || piece.slug}`,
+  }}
+>
   <article>
     <header class="article-header">
-      <a href="/" class="back-link">← กลับ</a>
+      <a href={`/?lang=${piece.data.language}`} class="back-link">{isEnglish ? '← Back' : '← กลับ'}</a>
       <div class="piece-label">
         <span class="numeral">{numeral}</span>
       </div>
@@ -42,32 +53,33 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     <section
       class="comments-section"
       data-slug={piece.slug}
+      data-language={piece.data.language}
       data-supabase-url={supabaseUrl}
       data-supabase-key={supabaseKey}
     >
       <div class="comments-header">
-        <h3>ความคิดเห็น</h3>
+        <h3>{isEnglish ? 'Comments' : 'ความคิดเห็น'}</h3>
       </div>
       <div id="comments-list" class="comments-list">
-        <p class="no-comments">กำลังโหลดความคิดเห็น...</p>
+        <p class="no-comments">{isEnglish ? 'Loading comments...' : 'กำลังโหลดความคิดเห็น...'}</p>
       </div>
 
       <form id="comment-form" class="comment-form">
-        <h4>แบ่งปันความคิดเห็น</h4>
+        <h4>{isEnglish ? 'Share your thoughts' : 'แบ่งปันความคิดเห็น'}</h4>
         <div class="form-group">
-          <label for="author-name">ชื่อของคุณ</label>
-          <input type="text" id="author-name" required placeholder="ชื่อของคุณ" />
+          <label for="author-name">{isEnglish ? 'Your name' : 'ชื่อของคุณ'}</label>
+          <input type="text" id="author-name" required placeholder={isEnglish ? 'Your name' : 'ชื่อของคุณ'} />
         </div>
         <div class="form-group">
-          <label for="comment-content">ข้อความ</label>
-          <textarea id="comment-content" required rows="4" placeholder="แบ่งปันความคิดเห็นของคุณ..."></textarea>
+          <label for="comment-content">{isEnglish ? 'Comment' : 'ข้อความ'}</label>
+          <textarea id="comment-content" required rows="4" placeholder={isEnglish ? 'Share your thoughts...' : 'แบ่งปันความคิดเห็นของคุณ...'}></textarea>
         </div>
-        <button type="submit" id="submit-btn">ส่งความคิดเห็น</button>
+        <button type="submit" id="submit-btn">{isEnglish ? 'Post comment' : 'ส่งความคิดเห็น'}</button>
       </form>
     </section>
 
     <footer class="article-footer">
-      <a href="/" class="back-link">← กลับไปหน้าหลัก</a>
+      <a href={`/?lang=${piece.data.language}`} class="back-link">{isEnglish ? '← Back to home' : '← กลับไปหน้าหลัก'}</a>
     </footer>
   </article>
 </Layout>
@@ -76,6 +88,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
   document.addEventListener('astro:page-load', () => {
     const section = document.querySelector('.comments-section') as HTMLElement;
     if (!section) return;
+    const isEnglish = section.dataset.language === 'en';
 
     const slug = section.getAttribute('data-slug');
     const supabaseUrl = section.getAttribute('data-supabase-url');
@@ -88,7 +101,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
 
     if (!supabaseUrl || !supabaseKey) {
-      commentsList.innerHTML = `<p class="no-comments">ระบบความคิดเห็นยังไม่ได้ตั้งค่าการเชื่อมต่อ (กรุณาตั้งค่า PUBLIC_SUPABASE_URL และ PUBLIC_SUPABASE_ANON_KEY)</p>`;
+      commentsList.innerHTML = `<p class="no-comments">${isEnglish ? 'Comments are not configured yet.' : 'ระบบความคิดเห็นยังไม่ได้ตั้งค่าการเชื่อมต่อ (กรุณาตั้งค่า PUBLIC_SUPABASE_URL และ PUBLIC_SUPABASE_ANON_KEY)'}</p>`;
       form.style.display = 'none';
       return;
     }
@@ -106,12 +119,12 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         const comments = await res.json();
 
         if (comments.length === 0) {
-          commentsList.innerHTML = `<p class="no-comments">ยังไม่มีความคิดเห็น มาร่วมเป็นคนแรกที่แสดงความคิดเห็นกัน!</p>`;
+          commentsList.innerHTML = `<p class="no-comments">${isEnglish ? 'No comments yet. Be the first to share your thoughts!' : 'ยังไม่มีความคิดเห็น มาร่วมเป็นคนแรกที่แสดงความคิดเห็นกัน!'}</p>`;
           return;
         }
 
         commentsList.innerHTML = comments.map((comment: any) => {
-          const date = new Date(comment.created_at).toLocaleDateString('th-TH', {
+          const date = new Date(comment.created_at).toLocaleDateString(isEnglish ? 'en-US' : 'th-TH', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
@@ -133,7 +146,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         }).join('');
       } catch (err) {
         console.error(err);
-        commentsList.innerHTML = `<p class="no-comments">ไม่สามารถโหลดความคิดเห็นได้ในขณะนี้</p>`;
+        commentsList.innerHTML = `<p class="no-comments">${isEnglish ? 'Comments could not be loaded.' : 'ไม่สามารถโหลดความคิดเห็นได้ในขณะนี้'}</p>`;
       }
     }
 
@@ -146,7 +159,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
       if (!author || !content) return;
 
       submitBtn.disabled = true;
-      submitBtn.textContent = 'กำลังส่ง...';
+      submitBtn.textContent = isEnglish ? 'Sending...' : 'กำลังส่ง...';
 
       try {
         const res = await fetch(`${supabaseUrl}/rest/v1/comments`, {
@@ -174,10 +187,10 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         await fetchComments();
       } catch (err: any) {
         console.error(err);
-        alert(`เกิดข้อผิดพลาดในการส่งความคิดเห็น: ${err.message}\n\n(กรุณาตรวจสอบว่าได้สร้างตาราง comments และตั้งค่า RLS ใน Supabase เรียบร้อยแล้ว)`);
+        alert(isEnglish ? `Could not post comment: ${err.message}` : `เกิดข้อผิดพลาดในการส่งความคิดเห็น: ${err.message}\n\n(กรุณาตรวจสอบว่าได้สร้างตาราง comments และตั้งค่า RLS ใน Supabase เรียบร้อยแล้ว)`);
       } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'ส่งความคิดเห็น';
+        submitBtn.textContent = isEnglish ? 'Post comment' : 'ส่งความคิดเห็น';
       }
     });
 

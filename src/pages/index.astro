@@ -5,36 +5,38 @@ import Layout from '../layouts/Layout.astro';
 import heroImage from '../assets/hero-banner.jpg';
 
 const writings = await getCollection('writings');
-writings.sort((a, b) => a.data.number - b.data.number);
+const thaiWritings = writings.filter((piece) => piece.data.language === 'th').sort((a, b) => a.data.number - b.data.number);
+const englishByNumber = new Map(writings.filter((piece) => piece.data.language === 'en').map((piece) => [piece.data.number, piece]));
 ---
 
-<Layout title="Breeze's Writing — งานเขียน">
+<Layout title="Breeze's Writing — งานเขียน" titleEn="Breeze's Writing — Writing" description="งานเขียนของ Breeze" descriptionEn="Writing by Breeze">
   <section class="hero">
     <div class="hero-image-wrapper">
       <Image src={heroImage} alt="Breeze's Writing Banner" class="hero-image" />
     </div>
-    <p class="hero-label">งานเขียน</p>
-    <h1>บทความและความคิด</h1>
-    <p class="hero-sub">รวมงานเขียนที่สะท้อนความรู้สึก ประสบการณ์ และมุมมองต่อชีวิต</p>
+    <p class="hero-label" data-th="งานเขียน" data-en="Writing">งานเขียน</p>
+    <h1 data-th="บทความและความคิด" data-en="Essays and reflections">บทความและความคิด</h1>
+    <p class="hero-sub" data-th="รวมงานเขียนที่สะท้อนความรู้สึก ประสบการณ์ และมุมมองต่อชีวิต" data-en="A collection of writing on feelings, experiences, and perspectives on life.">รวมงานเขียนที่สะท้อนความรู้สึก ประสบการณ์ และมุมมองต่อชีวิต</p>
   </section>
 
   <ul class="writing-list">
-    {writings.map((piece) => (
-      <li class="writing-item">
-        <a href={`/writings/${piece.slug}`}>
+    {thaiWritings.map((piece) => {
+      const englishPiece = englishByNumber.get(piece.data.number)!;
+      return <li class="writing-item">
+        <a href={`/writings/${piece.slug}`} data-th-href={`/writings/${piece.slug}`} data-en-href={`/writings/${englishPiece.slug}`}>
           <span class="number">
-            {['I','II','III','IV','V','VI','VII','VIII','IX'][piece.data.number - 1]}
+            {['I','II','III','IV','V','VI','VII','VIII','IX','X'][piece.data.number - 1]}
           </span>
           <div class="writing-info">
-            <h2>{piece.data.title}</h2>
+            <h2 data-th={piece.data.title} data-en={englishPiece.data.title}>{piece.data.title}</h2>
             {piece.data.excerpt && (
-              <p class="excerpt">{piece.data.excerpt}</p>
+              <p class="excerpt" data-th={piece.data.excerpt} data-en={englishPiece.data.excerpt}>{piece.data.excerpt}</p>
             )}
           </div>
           <span class="arrow">→</span>
         </a>
-      </li>
-    ))}
+      </li>;
+    })}
   </ul>
 </Layout>
 
