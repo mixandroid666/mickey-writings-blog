@@ -25,7 +25,7 @@ const englishByNumber = new Map(writings.filter((piece) => piece.data.language =
       return <li class="writing-item">
         <a href={`/writings/${piece.slug}`} data-th-href={`/writings/${piece.slug}`} data-en-href={`/writings/${englishPiece.slug}`}>
           <span class="number">
-            {['I','II','III','IV','V','VI','VII','VIII','IX','X'][piece.data.number - 1]}
+            {['I','II','III','IV','V','VI','VII','VIII','IX','X','XI'][piece.data.number - 1]}
           </span>
           <div class="writing-info">
             <h2 data-th={piece.data.title} data-en={englishPiece.data.title}>{piece.data.title}</h2>

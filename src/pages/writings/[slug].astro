@@ -15,7 +15,7 @@ const { Content } = await piece.render();
 const peer = (await getCollection('writings')).find((entry) => entry.data.number === piece.data.number && entry.data.language !== piece.data.language);
 const isEnglish = piece.data.language === 'en';
 
-const romanNumerals = ['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+const romanNumerals = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI'];
 const numeral = romanNumerals[piece.data.number - 1];
 
 // Read Supabase keys
@@ -53,6 +53,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     <section
       class="comments-section"
       data-slug={piece.slug}
+      data-comment-slugs={JSON.stringify([piece.slug, peer?.slug].filter(Boolean))}
       data-language={piece.data.language}
       data-supabase-url={supabaseUrl}
       data-supabase-key={supabaseKey}
@@ -91,6 +92,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     const isEnglish = section.dataset.language === 'en';
 
     const slug = section.getAttribute('data-slug');
+    const commentSlugs = JSON.parse(section.dataset.commentSlugs || JSON.stringify([slug]));
     const supabaseUrl = section.getAttribute('data-supabase-url');
     const supabaseKey = section.getAttribute('data-supabase-key');
 
@@ -109,7 +111,7 @@ const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     // Fetch comments
     async function fetchComments() {
       try {
-        const res = await fetch(`${supabaseUrl}/rest/v1/comments?article_slug=eq.${slug}&select=*&order=created_at.asc`, {
+        const res = await fetch(`${supabaseUrl}/rest/v1/comments?article_slug=in.(${commentSlugs.join(',')})&select=*&order=created_at.asc`, {
           headers: {
             'apikey': supabaseKey!,
             'Authorization': `Bearer ${supabaseKey}`
